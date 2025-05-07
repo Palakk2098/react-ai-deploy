@@ -1,0 +1,959 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+/* Layout container stretching full page height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.card{
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem 1.5rem 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 85%;
+  position: relative;
+}
+
+.card.selected {
+  background-color: #e0f3ff; /* light blue */
+  border: 2px solid #003366;
+}
+
+.header{
+  background: #333;
+  padding: 1rem;
+  color: white; 
+}
+
+.footer {
+  background-color: #003366; /* Same dark blue as header */
+  color: white;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  border-top: 2px solid #004080; /* subtle top border */
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.file-picker-container {
+  max-width: 500px;
+  margin: 8px auto;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  text-align: center;
+}
+
+.file-input-label:hover {
+  border-color: #007bff;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-text {
+  color: #666;
+  font-size: 14px;
+}
+
+.selected-files {
+  margin-top: 16px;
+}
+
+.file-list-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+
+
+.column {
+  float: left;
+  width: 33.33%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Button.css */
+.custom-button {
+  padding: 8px 15px;
+  background-color: #4a90e2; /* A soft blue */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  float: right;
+  margin-bottom: 2px;
+}
+
+.custom-button:hover {
+  background-color: #357ab8;
+}
+
+.custom-button:active {
+  background-color: #2f6ba2;
+}
+
+.custom-button:disabled {
+  background-color: #a0c3e8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
+.pagination {
+  padding: 8px 14px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.page-info {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #cc9900;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button:hover:not(:disabled) {
+  background-color: #b38600;
+}
+
+.nav-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.inline-label {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* spacing between text and select */
+}
+
+.inline-select {
+  flex: 1;
+}
+
+/* FileManagerLayout.css */
+
+
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0; /* Prevent child overflow */
+  width: 100%;
+}
+
+.sidebar {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  max-height: 72vh;
+  overflow-x: auto;
+}
+
+.file-select-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.file-item {
+  padding: 5px 12px 5px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+.file-select-name {
+  margin: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.file-size {
+  font-size: 11px;
+  color: #666;
+  position:absolute;
+  left:15px;
+  bottom: -2px;
+}
+
+/* .main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  padding: 10px;
+  flex-grow: 1;
+  min-width: 0; 
+  overflow-x: hidden;
+} */
+
+.attributes li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+
+.route-div{
+  display: flex;
+  justify-content: space-around;
+  width:60%;
+}
+
+.file-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.file-display {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.browse-btn {
+  background-color: #cc9900;
+  color: white;
+  padding: 7px 12px;
+  margin-left:6px;
+}
+
+.browse-btn:hover {
+  background-color: #b38600;
+}
+
+.upload-btn {
+  background-color: #003366;
+  color: white;
+  width: 100%;
+}
+
+.upload-btn:hover {
+  background-color: #004080;
+}
+.upload-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.browse-section{
+  display: flex;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.d-flex{
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-container{
+  padding: 0 1.5rem;
+}
+
+
+.panel-title-border {
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background-color: #fff;
+  padding: 0 6px;
+}
+
+.header {
+  display: flex;
+  
+  align-items: center;
+  background-color: #003366; /* dark blue */
+  color: white;
+  padding: 12px 24px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  border-bottom: 2px solid #004080; /* underline base for tabs */
+  padding-bottom: 6px;
+}
+
+.nav-link {
+  position: relative;
+  color: white;
+  text-decoration: none;
+  padding: 8px 0;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #aad4ff;
+}
+
+.nav-link.active::after {
+  background-color: #aad4ff; /* active tab underline */
+}
+
+
+.px-2{
+  padding:0 2rem;
+}
+
+.btn{
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+/* Basic form container */
+.attributes-form {
+  max-width: 600px;
+  margin: 15px auto;
+  padding: 12px;
+}
+
+/* Label styling */
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #333;
+}
+
+/* Input styling */
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* Read-only input styling */
+.form-group input[readonly] {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* Optional: Add some spacing between input fields */
+.form-group input:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Form container background and borders */
+.attributes-form {
+  padding: 15px;
+}
+
+.doc-container{
+   height: 65vh; 
+   overflow-y: auto;
+}
+
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .layout {
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 250px;
+    min-height: 90vh;
+  }
+
+}
+
+
+
+/* Style for each panel (you can apply this class manually or target each panel type) */
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  border-right: 1px solid #eee;
+  background-color: #fafafa;
+  height: 90vh;
+  overflow: hidden;
+  border-radius:5px;
+  max-width:400px;
+}
+
+.sidebar-panel.collapsed {
+  width: 40px;
+  align-items: center;
+}
+
+.sidebar-panel.expanded {
+  width: auto; /* auto based on content */
+}
+
+.panel-title {
+  writing-mode: horizontal-tb;
+  transform: none;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #ddd;
+  text-align: center;
+  border:1px solid #eee;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.sidebar-panel.collapsed .panel-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  height: 100%;
+  text-align: end;
+}
+
+.panel-content {
+  overflow-y: auto;
+  flex: 1;
+  position: relative;
+}
+
+.attributes-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.horizontal-panels {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  min-width: 0; /* prevents children from pushing it */
+  margin-top:8px;
+  max-width: 100vw;
+}
+/* CollapsiblePanel takes fixed or dynamic width */
+.collapsible-panel-wrapper {
+  transition: width 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* PDFViewer and ChatbotPanel should fill space equally */
+.pdf-viewer-wrapper {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+ 
+}
+
+/* CSS for pdf viewer*/
+.pdf-viewer {
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  height: 68vh;
+}
+
+.pdf-pages-container {
+  max-height: 80vh; /* Set a fixed height for the container */
+  overflow-y: scroll; /* Enable vertical scroll */
+  overflow-x: auto; /* Enable horizontal scroll */
+  padding-right: 20px; /* Prevent content from being cut off due to the scroll bar */
+  position: relative;
+}
+
+/* Custom scrollbar styles for Webkit browsers (Chrome, Safari, etc.) */
+.pdf-pages-container::-webkit-scrollbar {
+  width: 5px; /* Adjust the width of the scrollbar */
+  height: 8px; /* Add height for the horizontal scrollbar */
+}
+
+.pdf-pages-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Track color */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.pdf-pages-container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.pdf-pages-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker color on hover */
+}
+
+.react-pdf__Page {
+  margin-bottom: 20px;
+  display: block;
+}
+
+
+/* Main structure for the layout */
+.chatbot-panel-wrapper {
+  flex: 1;
+  max-width: 500px; /* Set a max width */
+  min-width: 200px; /* Optional: minimum width */
+  overflow: auto; /* Enable scrolling if content overflows */
+  margin-right: 1rem; /* Optional: margin for spacing */
+  resize: horizontal; /* Allow horizontal resizing */
+  width: 100%; /* Ensure it can resize based on available space */
+  transition: width 0.3s ease; /* Smooth resizing transition */
+}
+
+
+
+/* Chat input and chat area layout */
+.chatbot-panel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  position:relative;
+}
+
+.chat-input {
+  width: 100%;
+  padding-right: 40px; /* Space for the icon */
+  padding-left: 12px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.send-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888; /* Can inherit from parent or be set */
+}
+
+.send-icon-disabled {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: not-allowed;
+  color: #555; /* Can inherit from parent or be set */
+}
+
+.chat-send-btn:hover {
+  background-color: #b38600;
+}
+
+.chat-send-btn:disabled{
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.chat-area {
+  display: flex;
+  flex-direction: column-reverse;
+  flex: 1;
+  overflow-x: auto;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+  border-radius: 4px;
+  gap: 10px;
+  height: 56vh;
+}
+
+/* Chat messages for user and bot */
+.chat-message {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+  max-width: 80%;
+}
+
+.chat-message.bot {
+  background-color: #e6f0ff;
+  color: #003366;
+  align-self: flex-start;
+}
+
+.chat-message.user {
+  background-color: #d1ffd6;
+  color: #004d00;
+  align-self: flex-end;
+}
+
+/* Make the chatbot responsive for smaller screens */
+@media (max-width: 768px) {
+  .chatbot-panel-wrapper {
+    max-width: 100%;
+    width: 100%;
+    margin-right: 0; /* Adjust margin for smaller screens */
+  }
+
+  .chat-area {
+    padding-right: 10px; /* Optional: ensure space for horizontal scroll */
+  }
+}
+
+/* Optional: Centered layout for chat content */
+.chat-container {
+  width: 100%; /* Take full width of the parent container */
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 10px; /* Optional: padding for aesthetics */
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Custom scrollbars for better look */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d3d3d3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* Dot typing effects in chat */
+.jumping-dots span {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  animation: jump 1s infinite;
+  display: inline-block;
+}
+
+.jumping-dots .dot-1 {
+  background-color: #003366;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 3px;
+  animation-delay: 200ms;
+}
+
+.jumping-dots .dot-2 {
+  background-color: #003366;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 3px;
+  animation-delay: 400ms;
+}
+
+.jumping-dots .dot-3 {
+  background-color: #003366;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 3px;
+  animation-delay: 600ms;
+}
+
+/* Sticky tag container inside chat-area */
+.sticky-tags {
+  position: sticky;
+  bottom: 0;
+  padding-top: 10px;
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  z-index: 1;
+  justify-content: center;
+}
+
+/* Tag style: white background, grey text and border */
+.tag-message {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  color: #555;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  max-width: fit-content;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hover effect: slight grey background */
+.tag-message:hover {
+  background-color: #f2f2f2;
+  border-color: #aaa;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  /* Centering styles */
+  position: absolute;
+  top: 35%;
+  left: 40%;
+}
+
+.pdf-loader{
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  /* Centering styles */
+  position: absolute;
+  top: 35%;
+  left: 47%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes jump {
+  0% {
+    bottom: 0px;
+  }
+  20% {
+    bottom: 5px;
+  }
+  40% {
+    bottom: 0px;
+  }
+}
+
+
+@media (min-width: 1024px) {
+  .main {
+    width: 100%;
+    grid-template-columns: 2fr 1fr;
+    margin: 0 auto;
+  }
+ 
+}
+
+
+@media(max-width:768px){
+  .upload-section{
+    display:flex;
+    justify-content: center;
+  }
+  .upload-btn{
+    margin-left: 1rem;
+  } 
+  .main {
+    grid-template-columns: repeat(2, 2fr 1fr);
+  } 
+}
+
+/* For smaller screens or specific breakpoints */
+
+@media (max-width: 1684px) {
+  .horizontal-panels {
+    display: flex;
+    flex-wrap: wrap; /* allows children to wrap instead of overflowing */
+    max-width: 100vw;
+    overflow-x: hidden; /* prevents horizontal scroll */
+    box-sizing: border-box;
+  }
+  
+  .chatbot-panel-wrapper {
+    flex: 0 1 auto;
+    width: 450px;
+  }
+
+  .sidebar-panel.expanded{
+    width:260px;
+    height: 68vh;
+  }
+
+  .chat-send-btn {
+    font-size: 12px;
+  }
+
+  .chat-input{
+    font-size: 12px;
+  }
+
+  .btn{
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  label{
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1256px) {
+  .chatbot-panel-wrapper {
+    flex: 0 1 auto;
+    width: 320px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
