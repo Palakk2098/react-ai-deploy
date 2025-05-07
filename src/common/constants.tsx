@@ -1,5 +1,5 @@
-// const API_BASE_URL = 'http://192.168.102.182:8000/api';
-const API_BASE_URL = 'http://192.168.103.191:8000/api';
+const API_BASE_URL = 'http://192.168.102.182:8000/api';
+// const API_BASE_URL = 'http://192.168.103.191:8000/api';
 // const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
